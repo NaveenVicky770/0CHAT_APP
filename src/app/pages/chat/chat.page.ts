@@ -12,18 +12,24 @@ import { Observable } from 'rxjs';
 })
 export class ChatPage implements OnInit {
   @ViewChild(IonContent) content: IonContent;
+
  
   messages: Observable<Message[]>;
   newMsg = '';
+  selectedAssistant="";
   
   constructor(private chatService: ChatService, private router: Router) { }
 
   ngOnInit() {
+    const supportAssistants = ['t1@gmail.com','t2@gmail.com', 't3@gmail.com','t4@gmail.com'];
+    const rndInt = Math.floor(Math.random() * 4) + 1;
     this.messages = this.chatService.getChatMessages();
+    this.selectedAssistant = supportAssistants[rndInt];
+    console.log('Selected Assistant===>',supportAssistants[rndInt-1]);
   }
 
   sendMessage() {
-    this.chatService.addChatMessage(this.newMsg).then(() => {
+    this.chatService.addChatMessage(this.newMsg,this.selectedAssistant).then(() => {
       this.newMsg = '';
       this.content.scrollToBottom();
     });

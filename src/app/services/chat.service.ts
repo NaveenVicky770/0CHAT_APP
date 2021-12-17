@@ -57,10 +57,11 @@ export class ChatService {
     return this.afAuth.signOut();
   }
 
-  addChatMessage(msg) {
+  addChatMessage(msg,toSupportAssistant) {
     return this.afs.collection('messages').add({
       msg,
       from: this.currentUser.uid,
+      to: toSupportAssistant,
       createdAt: firebase.firestore.FieldValue.serverTimestamp()
     });
   }
@@ -78,7 +79,9 @@ export class ChatService {
         for (let m of messages) {
           m.fromName = this.getUserForMsg(m.from, users);
           m.myMsg = this.currentUser.uid === m.from;
+          console.log("message-item==>",m);
         }
+        
         console.log('all messages: ', messages);
         return messages;
       })
